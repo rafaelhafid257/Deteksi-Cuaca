@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediksi Cuaca | Weather Forecast</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Aplikasi prediksi cuaca harian berdasarkan parameter suhu, kelembaban, kecepatan angin, dan penyinaran matahari">
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #6c757d;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark-text);
+        }
+        
+        .weather-app {
+            max-width: 600px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .weather-app:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .app-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .app-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        
+        .app-subtitle {
+            color: var(--light-text);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+        }
+        
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
+        }
+        
+        .input-group-text {
+            background-color: #f1f3f5;
+            border-radius: 10px 0 0 10px !important;
+        }
+        
+        .btn-predict {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: none;
+            padding: 0.75rem;
+            font-weight: 600;
+            border-radius: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+        
+        .weather-icon {
+            font-size: 1.25rem;
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .weather-app {
+                margin: 20px;
+                padding: 1.5rem;
+            }
+            
+            .app-title {
+                font-size: 1.75rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .weather-app {
+                padding: 1.25rem;
+            }
+            
+            .app-title {
+                font-size: 1.5rem;
+            }
+            
+            .form-control {
+                padding: 0.65rem 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="weather-app">
+            <div class="app-header">
+                <h1 class="app-title"><i class="fas fa-cloud-sun weather-icon"></i> Prediksi Cuaca</h1>
+                <p class="app-subtitle">Masukkan parameter cuaca untuk mendapatkan prediksi harian</p>
+            </div>
+            
+            <form action="/predict" method="post">
+                <div class="mb-4">
+                    <label for="suhu" class="form-label"><i class="fas fa-temperature-high weather-icon"></i> Suhu (°C)</label>
+                    <div class="input-group">
+                        <input type="number" name="suhu" id="suhu" step="0.1" class="form-control" placeholder="Misal: 28.5" required>
+                    </div>
+                </div>
+
+                
+                
+                <div class="mb-4">
+                    <label for="kelembaban" class="form-label"><i class="fas fa-tint weather-icon"></i> Kelembaban (%)</label>
+                    <input type="number" name="kelembaban" id="kelembaban" step="0.1" class="form-control" placeholder="Misal: 75.0" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="angin" class="form-label"><i class="fas fa-wind weather-icon"></i> Kecepatan Angin (knot)</label>
+                    <input type="number" name="angin" id="angin" step="0.1" class="form-control" placeholder="Misal: 12.3" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="penyinaran" class="form-label"><i class="fas fa-sun weather-icon"></i> Lama Penyinaran Matahari (%)</label>
+                    <input type="number" name="penyinaran" id="penyinaran" step="0.1" class="form-control" placeholder="Misal: 80.5" required>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-predict">
+                        <i class="fas fa-cloud-showers-heavy me-2"></i> Prediksi Cuaca
+                    </button>
+                </div>
+            </form>
+            
+            <div class="footer mt-4">
+                <p>Aplikasi Prediksi Cuaca Harian &copy; 2023</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS for animations -->
+    <script>
+        // Add simple animation to form inputs on focus
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('animate__animated', 'animate__pulse');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('animate__animated', 'animate__pulse');
+            });
+        });
+    </script>
+</body>
+</html>
